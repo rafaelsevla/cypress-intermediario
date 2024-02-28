@@ -11,8 +11,15 @@ Cypress.Commands.add('login', (
     cy.get("[data-qa-selector='sign_in_button']").click()
   }
 
+  const validate = () => {
+    cy.visit('/')
+    cy.location('pathname', { timeout: 1000 })
+      .should('not.eq', '/users/sign_in')
+  }
+
   const options = {
     cacheAcrossSpecs: true,
+    validate,
   }
 
   if (cacheSession) {
@@ -21,6 +28,7 @@ Cypress.Commands.add('login', (
     login()
   }
 })
+
 
 Cypress.Commands.add('logout', () => {
   cy.get('.qa-user-avatar').click()
